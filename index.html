@@ -1,76 +1,281 @@
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#b95d3b">
-  <script>
-    try { document.documentElement.dataset.theme = localStorage.getItem('folio-theme-v2') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); }
-    catch { document.documentElement.dataset.theme = 'light'; }
-  </script>
-  <meta name="description" content="A little you, beautifully on paper. Build, customize, and download your resume with Folio.">
-  <title>Folio Studio — Resume and CV builder</title>
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%23b95d3b'/%3E%3Cpath d='M21 16h25v8H29v8h14v8H29v14h-8z' fill='white'/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="resume.css">
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="toolkit.css">
-  <script src="vendor/pdf-lib.min.js" defer></script>
-  <script src="vendor/fontkit.umd.min.js" defer></script>
-  <script src="vendor/export-fonts.js" defer></script>
-  <script src="templates.js" defer></script>
-  <script src="resume.js" defer></script>
-  <script src="export.js" defer></script>
-  <script src="vendor/jszip.min.js" defer></script>
-  <script src="vendor/docx.iife.js" defer></script>
-  <script src="vendor/pdf.worker.classic.js" defer></script>
-  <script src="vendor/pdf.classic.js" defer></script>
-  <script src="vendor/resume-css.js" defer></script>
-  <script src="file-tools.js" defer></script>
-  <script src="tools-core.js" defer></script>
-  <script src="app.js" defer></script>
-  <script src="toolkit.js" defer></script>
-</head>
-<body>
-  <header class="site-header">
-    <a class="brand" href="#" aria-label="Folio home"><span class="brand-mark">f<span></span></span>folio<span class="brand-dot">.</span><span class="version-tag">STUDIO</span></a>
-    <nav class="main-nav" aria-label="Main navigation">
-      <button class="nav-link active" data-tool="resume">Resume builder</button>
-      <button class="nav-link" data-tool="letter">Cover letter</button>
-      <button class="nav-link" data-action="documents">My resumes</button>
-      <button class="nav-link" data-tool="dashboard">Resume tools <span class="nav-arrow">↗</span></button>
-      <button class="nav-link mobile-more" data-tool="dashboard">Resume tools ↗</button>
-    </nav>
-    <div class="header-end"><button id="theme-toggle" class="theme-toggle" aria-label="Switch to dark mode" title="Switch to dark mode"><svg class="theme-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M20.5 13A8.5 8.5 0 0 1 11 3.5 8.5 8.5 0 1 0 20.5 13Z"/></svg><svg class="theme-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg></button><button class="avatar" data-action="documents" aria-label="Open my resumes">AM</button></div>
-  </header>
-  <main>
-    <section class="workspace-heading">
-      <div><div class="breadcrumb">YOUR CAREER, WELL TOLD <span> / </span> RESUME & CV BUILDER</div><h1>Build your next resume<span>.</span></h1><p>Choose a template. Make it yours. Download your resume.</p></div>
-      <div class="heading-actions"><span id="save-status" class="save-status" role="status" title="Stored locally in this browser on this device. No cloud sync."><i data-icon="check"></i> Saved in this browser</span><button class="button button-secondary" data-action="preview"><i data-icon="eye"></i> Preview</button><button class="button button-primary" data-action="download"><i data-icon="download"></i> Download <i data-icon="chevron-down" class="small-icon"></i></button></div>
-    </section>
-    <div class="studio-shortcuts" aria-label="Career tools">
-      <button data-tool="gallery"><i data-icon="sliders"></i> Templates <span class="pill-count">16</span></button>
-      <button data-tool="check"><i data-icon="check-circle"></i> Resume check <span id="readiness-value" class="pill-count">—</span></button>
-      <button data-tool="match"><i data-icon="eye"></i> Match a job</button>
-      <button data-tool="dashboard"><i data-icon="grip"></i> More tools</button>
-      <span class="demo-status shortcut-end" id="demo-status"></span>
-    </div>
-    <div class="mobile-switch"><button class="selected" data-action="mobile-content">Edit resume</button><button data-action="mobile-preview">Live preview</button></div>
-    <section class="studio" aria-label="Resume editor">
-      <aside class="editor-panel">
-        <div class="document-title"><span class="document-icon"><i data-icon="file"></i></span><input id="document-name" aria-label="Resume name" value="My first resume" maxlength="80"><i data-icon="pencil"></i><span class="document-badge">DRAFT</span></div>
-        <div class="editor-tabs" role="tablist" aria-label="Editor mode"><button id="tab-content" class="selected" role="tab" aria-selected="true" data-action="content"><i data-icon="align-left"></i> Content</button><button id="tab-design" role="tab" aria-selected="false" data-action="design"><i data-icon="sliders"></i> Design</button></div>
-        <div id="editor-content" class="editor-body" role="tabpanel" aria-labelledby="tab-content"></div>
-        <div class="editor-footer"><i data-icon="shield"></i><span>Your story stays yours. Saved on this device.</span></div>
-      </aside>
-      <div class="preview-workspace">
-        <div class="preview-toolbar"><div class="toolbar-left"><div class="mode-switch"><button class="selected" data-tool="resume">Resume</button><button data-tool="letter">Cover letter</button></div><span><span class="live-dot"></span> LIVE</span></div><div class="preview-tools"><button data-tool="undo" aria-label="Undo change" title="Undo change">↶</button><button data-tool="redo" aria-label="Redo change" title="Redo change">↷</button><span class="toolbar-divider"></span><button data-action="zoom-out" aria-label="Zoom out"><i data-icon="minus"></i></button><span id="zoom-label">65%</span><button data-action="zoom-in" aria-label="Zoom in"><i data-icon="plus"></i></button><span class="toolbar-divider"></span><button data-action="fit" aria-label="Fit resume to view" title="Fit to view"><i data-icon="maximize"></i></button></div></div>
-        <div class="preview-scroll" id="preview-scroll"><div class="paper-frame" id="paper-frame"><div id="resume-preview"></div></div><p class="preview-note"><i data-icon="sparkles"></i> Good things are taking shape.</p></div>
-        <div class="preview-bottom"><span id="paper-label">A4 · 210 × 297 mm</span><span><i data-icon="check-circle"></i> Ready for your next opportunity</span></div>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#b95d3b" />
+    <script>
+      try {
+        document.documentElement.dataset.theme =
+          localStorage.getItem("folio-theme-v2") ||
+          (matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "light");
+      } catch {
+        document.documentElement.dataset.theme = "light";
+      }
+    </script>
+    <meta
+      name="description"
+      content="A little you, beautifully on paper. Build, customize, and download your resume with Folio."
+    />
+    <title>Folio Studio — Resume and CV builder</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%23b95d3b'/%3E%3Cpath d='M21 16h25v8H29v8h14v8H29v14h-8z' fill='white'/%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="resume.css" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="toolkit.css" />
+    <script src="vendor/pdf-lib.min.js" defer></script>
+    <script src="vendor/fontkit.umd.min.js" defer></script>
+    <script src="vendor/export-fonts.js" defer></script>
+    <script src="templates.js" defer></script>
+    <script src="resume.js" defer></script>
+    <script src="export.js" defer></script>
+    <script src="vendor/jszip.min.js" defer></script>
+    <script src="vendor/docx.iife.js" defer></script>
+    <script src="vendor/pdf.worker.classic.js" defer></script>
+    <script src="vendor/pdf.classic.js" defer></script>
+    <script src="vendor/resume-css.js" defer></script>
+    <script src="resume-import.js" defer></script>
+    <script src="file-tools.js" defer></script>
+    <script src="tools-core.js" defer></script>
+    <script src="icons.js" defer></script>
+    <script src="demo.js" defer></script>
+    <script src="theme.js" defer></script>
+    <script src="app.js" defer></script>
+    <script src="toolkit.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#" aria-label="Folio home"
+        ><span class="brand-mark">f<span></span></span>folio<span
+          class="brand-dot"
+          >.</span
+        ><span class="version-tag">STUDIO</span></a
+      >
+      <nav class="main-nav" aria-label="Main navigation">
+        <button class="nav-link active" data-tool="resume">
+          Resume builder
+        </button>
+        <button class="nav-link" data-tool="letter">Cover letter</button>
+        <button class="nav-link" data-action="documents">My resumes</button>
+        <button class="nav-link" data-tool="dashboard">
+          Resume tools <span class="nav-arrow">↗</span>
+        </button>
+        <button class="nav-link mobile-more" data-tool="dashboard">
+          Resume tools ↗
+        </button>
+      </nav>
+      <div class="header-end">
+        <button
+          id="theme-toggle"
+          class="theme-toggle"
+          aria-label="Switch to dark mode"
+          title="Switch to dark mode"
+        >
+          <svg
+            class="theme-moon"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.7"
+            aria-hidden="true"
+          >
+            <path
+              d="M20.5 13A8.5 8.5 0 0 1 11 3.5 8.5 8.5 0 1 0 20.5 13Z"
+            /></svg
+          ><svg
+            class="theme-sun"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.7"
+            aria-hidden="true"
+          >
+            <circle cx="12" cy="12" r="4" />
+            <path
+              d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"
+            />
+          </svg></button
+        ><button
+          class="avatar"
+          data-action="documents"
+          aria-label="Open my resumes"
+        >
+          AM
+        </button>
       </div>
-      <aside class="template-panel"><div class="template-panel-heading"><span class="eyebrow">THE DESIGN COLLECTION</span><h2>A style for every story.</h2><p>Start with a favorite. Make every detail your own.</p></div><div class="template-grid" id="template-grid"></div><button class="all-templates-button" data-tool="gallery">Explore all 16 templates <i data-icon="arrow-up-right"></i></button><button class="custom-template" data-action="custom"><span class="custom-icon"><i data-icon="plus"></i></span><span><strong>Create your own</strong><small>Design it. Save it. Use it again.</small></span><i data-icon="arrow-up-right"></i></button><div class="template-note"><i data-icon="sparkles"></i><p>All templates. All local tools.<br>More room for your next move.</p></div></aside>
-    </section>
-  </main>
-  <footer class="site-footer"><span>FOLIO STUDIO · MADE FOR YOUR NEXT CHAPTER</span></footer>
-  <div id="modal-root"></div><div id="toast" class="toast" role="status" aria-live="polite"></div>
-</body>
+    </header>
+    <main>
+      <section class="workspace-heading">
+        <div>
+          <div class="breadcrumb">
+            YOUR CAREER, WELL TOLD <span> / </span> RESUME & CV BUILDER
+          </div>
+          <h1>Build your next resume<span>.</span></h1>
+          <p>Choose a template. Make it yours. Download your resume.</p>
+        </div>
+        <div class="heading-actions">
+          <span
+            id="save-status"
+            class="save-status"
+            role="status"
+            title="Stored locally in this browser on this device. No cloud sync."
+            ><i data-icon="check"></i> Saved in this browser</span
+          ><button class="button button-secondary" data-action="preview">
+            <i data-icon="eye"></i> Preview</button
+          ><button class="button button-primary" data-action="download">
+            <i data-icon="download"></i> Download
+            <i data-icon="chevron-down" class="small-icon"></i>
+          </button>
+        </div>
+      </section>
+      <div class="studio-shortcuts" aria-label="Career tools">
+        <button data-tool="gallery">
+          <i data-icon="sliders"></i> Templates
+          <span class="pill-count">16</span>
+        </button>
+        <button data-tool="check">
+          <i data-icon="check-circle"></i> Resume check
+          <span id="readiness-value" class="pill-count">—</span>
+        </button>
+        <button data-tool="match"><i data-icon="eye"></i> Match a job</button>
+        <button data-tool="dashboard">
+          <i data-icon="grip"></i> More tools
+        </button>
+        <span class="demo-status shortcut-end" id="demo-status"></span>
+      </div>
+      <div class="mobile-switch">
+        <button class="selected" data-action="mobile-content">
+          Edit resume</button
+        ><button data-action="mobile-preview">Live preview</button>
+      </div>
+      <section class="studio" aria-label="Resume editor">
+        <aside class="editor-panel">
+          <div class="document-title">
+            <span class="document-icon"><i data-icon="file"></i></span
+            ><input
+              id="document-name"
+              aria-label="Resume name"
+              value="My first resume"
+              maxlength="80"
+            /><i data-icon="pencil"></i
+            ><span class="document-badge">DRAFT</span>
+          </div>
+          <div class="editor-tabs" role="tablist" aria-label="Editor mode">
+            <button
+              id="tab-content"
+              class="selected"
+              role="tab"
+              aria-selected="true"
+              data-action="content"
+            >
+              <i data-icon="align-left"></i> Content</button
+            ><button
+              id="tab-design"
+              role="tab"
+              aria-selected="false"
+              data-action="design"
+            >
+              <i data-icon="sliders"></i> Design
+            </button>
+          </div>
+          <div
+            id="editor-content"
+            class="editor-body"
+            role="tabpanel"
+            aria-labelledby="tab-content"
+          ></div>
+          <div class="editor-footer">
+            <i data-icon="shield"></i
+            ><span>Your story stays yours. Saved on this device.</span>
+          </div>
+        </aside>
+        <div class="preview-workspace">
+          <div class="preview-toolbar">
+            <div class="toolbar-left">
+              <div class="mode-switch">
+                <button class="selected" data-tool="resume">Resume</button
+                ><button data-tool="letter">Cover letter</button>
+              </div>
+              <span><span class="live-dot"></span> LIVE</span>
+            </div>
+            <div class="preview-tools">
+              <button
+                data-tool="undo"
+                aria-label="Undo change"
+                title="Undo change"
+              >
+                ↶</button
+              ><button
+                data-tool="redo"
+                aria-label="Redo change"
+                title="Redo change"
+              >
+                ↷</button
+              ><span class="toolbar-divider"></span
+              ><button data-action="zoom-out" aria-label="Zoom out">
+                <i data-icon="minus"></i></button
+              ><span id="zoom-label">65%</span
+              ><button data-action="zoom-in" aria-label="Zoom in">
+                <i data-icon="plus"></i></button
+              ><span class="toolbar-divider"></span
+              ><button
+                data-action="fit"
+                aria-label="Fit resume to view"
+                title="Fit to view"
+              >
+                <i data-icon="maximize"></i>
+              </button>
+            </div>
+          </div>
+          <div class="preview-scroll" id="preview-scroll">
+            <div class="paper-frame" id="paper-frame">
+              <div id="resume-preview"></div>
+            </div>
+            <p class="preview-note">
+              <i data-icon="sparkles"></i> Good things are taking shape.
+            </p>
+          </div>
+          <div class="preview-bottom">
+            <span id="paper-label">A4 · 210 × 297 mm</span
+            ><span
+              ><i data-icon="check-circle"></i> Ready for your next
+              opportunity</span
+            >
+          </div>
+        </div>
+        <aside class="template-panel">
+          <div class="template-panel-heading">
+            <span class="eyebrow">THE DESIGN COLLECTION</span>
+            <h2>A style for every story.</h2>
+            <p>Start with a favorite. Make every detail your own.</p>
+          </div>
+          <div class="template-grid" id="template-grid"></div>
+          <button class="all-templates-button" data-tool="gallery">
+            Explore all 16 templates <i data-icon="arrow-up-right"></i></button
+          ><button class="custom-template" data-action="custom">
+            <span class="custom-icon"><i data-icon="plus"></i></span
+            ><span
+              ><strong>Create your own</strong
+              ><small>Design it. Save it. Use it again.</small></span
+            ><i data-icon="arrow-up-right"></i>
+          </button>
+          <div class="template-note">
+            <i data-icon="sparkles"></i>
+            <p>
+              All templates. All local tools.<br />More room for your next move.
+            </p>
+          </div>
+        </aside>
+      </section>
+    </main>
+    <footer class="site-footer">
+      <span>FOLIO STUDIO · MADE FOR YOUR NEXT CHAPTER</span>
+    </footer>
+    <div id="modal-root"></div>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  </body>
 </html>

@@ -1,0 +1,24 @@
+# Local dependencies and caches
+node_modules/
+.cache/
+
+# Environment files and secrets
+.env
+.env.*
+!.env.example
+
+# Logs
+*.log
+npm-debug.log*
+
+# Editor and operating-system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Local archives
+*.zip
+
+# Keep vendor/: these bundled libraries are required by GitHub Pages.
