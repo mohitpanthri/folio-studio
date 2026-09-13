@@ -1,0 +1,23 @@
+(function () {
+  'use strict';
+
+  // Original Folio designs. All templates use the same editable resume data.
+  window.FolioTemplates = [
+    { id: 'studio', name: 'Studio', description: 'A considered classic with a quiet sidebar.', category: 'Professional', defaultFont: 'sans', layout: 'two-column', accent: '#b65c3a' },
+    { id: 'editorial', name: 'Editorial', description: 'Refined serif type, centered and balanced.', category: 'Professional', defaultFont: 'serif', layout: 'one-column', accent: '#754f40' },
+    { id: 'modern', name: 'Modern', description: 'A confident accent and clean skill tags.', category: 'Modern', defaultFont: 'sans', layout: 'one-column', accent: '#28615c' },
+    { id: 'minimal', name: 'Minimal', description: 'Simple lines. Room for your experience.', category: 'Professional', defaultFont: 'sans', layout: 'one-column', accent: '#36434c' },
+    { id: 'executive', name: 'Executive', description: 'A strong masthead for your next leadership role.', category: 'Professional', defaultFont: 'sans', layout: 'one-column', accent: '#243e54' },
+    { id: 'oxford', name: 'Oxford', description: 'Traditional serif type and understated rules.', category: 'Academic', defaultFont: 'serif', layout: 'one-column', accent: '#342f2b' },
+    { id: 'slate', name: 'Slate', description: 'A dark banner with a structured side column.', category: 'Modern', defaultFont: 'sans', layout: 'two-column', accent: '#304d5b' },
+    { id: 'ribbon', name: 'Ribbon', description: 'A signature color band and framed section names.', category: 'Creative', defaultFont: 'sans', layout: 'one-column', accent: '#8d4c65' },
+    { id: 'timeline', name: 'Timeline', description: 'A clear visual path through your career.', category: 'Modern', defaultFont: 'sans', layout: 'one-column', accent: '#3e6475' },
+    { id: 'compact', name: 'Compact', description: 'Efficient spacing for a substantial career.', category: 'Professional', defaultFont: 'sans', layout: 'two-column', accent: '#464b43' },
+    { id: 'summit', name: 'Summit', description: 'Oversized initials and a decisive blue line.', category: 'Modern', defaultFont: 'sans', layout: 'two-column', accent: '#355e89' },
+    { id: 'atelier', name: 'Atelier', description: 'Expressive serif type with a generous sidebar.', category: 'Creative', defaultFont: 'serif', layout: 'two-column', accent: '#986443' },
+    { id: 'grid', name: 'Grid', description: 'A graphic, modular layout with open spacing.', category: 'Creative', defaultFont: 'sans', layout: 'two-column', accent: '#425952' },
+    { id: 'ivory', name: 'Ivory', description: 'A warm title panel and elegant typography.', category: 'Creative', defaultFont: 'serif', layout: 'one-column', accent: '#82704e' },
+    { id: 'scholar', name: 'Scholar', description: 'A formal CV for research, teaching, and publications.', category: 'Academic', defaultFont: 'serif', layout: 'one-column', accent: '#3a5261' },
+    { id: 'technical', name: 'Technical', description: 'Monospaced details and clear technical hierarchy.', category: 'Modern', defaultFont: 'mono', layout: 'one-column', accent: '#34645e' }
+  ];
+})();
